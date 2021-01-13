@@ -5,16 +5,26 @@
     $lastname = $_POST['last'];
     $latitude = $_POST['lat'];
     $longitude = $_POST['long'];
-    $area = $_POST['area'];
+    $plcName = $_POST['name'];
+    
+    if(isset($_POST['submit']))
+    $idcount = "SELECT COUNT(id) as countid FROM apprentices";
+    $results = $connection->query($idcount);
+    $row = $results->fetch_assoc();
+    $id = $row["countid"]+1;
 
 
-    $placesql = "INSERT INTO places (latitude, longitude, area) VALUES ($latitude, $longitude, $area);";
-    $apprsql = "INSERT INTO apprentices (prename, lastname, place_id, markers_id) VALUES ('DREEWWW', LONGEE, 'TATA', 'TATA');";
-    $apprResult = mysqli_query($connection, $apprsql);
-    $placeResult = mysqli_query($connection, $placesql);
+    $placSQL = "INSERT INTO places (id, name, latitude, longitude) VALUES ($id, '$plcName', '$latitude','$longitude');";
+    $markSQL = "INSERT INTO markers (id) VALUE ($id);";
+    $apprSQL = "INSERT INTO apprentices (prename, lastname, place_id, markers_id) VALUES ('$prename', '$lastname', $id, $id);";
+    
+    mysqli_query($connection, $placSQL);
+    mysqli_query($connection, $markSQL);
+    mysqli_query($connection, $apprSQL);
+    
           header("Location: index.php?submit=success");
 
-          if ($connection === FALSE) {
+          /*if ($connection === FALSE) {
             die("Connection failed: " . $connection->connect_error);
           }
 
@@ -24,6 +34,6 @@
             echo "Error: " . $apprsql AND $placesql . "<br>" . $connection->error;
           }
           
-          $connection->close();
+          $connection->close();*/
     ?>
           

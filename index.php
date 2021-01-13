@@ -28,9 +28,15 @@
         <input type="text" name="last" placeholder="Lastname">
         <input type="text" name="lat" placeholder="Latitude">
         <input type="text" name="long" placeholder="Longtitude">
-        <input type="text" name="area" placeholder="Area">
+        <input type="text" name="name" placeholder="Area">
         <button type="submit" name="submit">Save</button>
     </form>
+    <?php
+      $appr = "SELECT * FROM apprentices;";
+      $place = "SELECT * FROM places;";
+      mysqli_query($connection, $appr);
+      mysqli_query($connection, $place);
+    ?>
     
     <div id="map" class="map"></div>
     <script type="text/javascript">
