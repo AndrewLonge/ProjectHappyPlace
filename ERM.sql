@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS `happyplace`.`places` (
   `longitude` VARCHAR(255) NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `name_UNIQUE` (`name` ASC))
+  
 ENGINE = InnoDB;
 
 
@@ -73,6 +74,7 @@ CREATE TABLE IF NOT EXISTS `happyplace`.`apprentices` (
     REFERENCES `happyplace`.`markers` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
+
 ENGINE = InnoDB;
 
 
