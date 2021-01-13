@@ -1,5 +1,5 @@
 <?php
-  include 'db.php'
+  include '../db.php'
   ?>
 <!doctype html>
 <html lang="en">
@@ -30,6 +30,7 @@
         <input type="text" name="long" placeholder="Longtitude">
         <input type="text" name="name" placeholder="Area">
         <button type="submit" name="submit">Save</button>
+        <button type="button"><a href="login.php" >Login as Admin</a></button>
     </form>
     <?php
       $appr = "SELECT * FROM apprentices;";

@@ -1,5 +1,5 @@
 <?php
-    include 'db.php';
+    include '../db.php';
 
     $prename = $_POST['first'];
     $lastname = $_POST['last'];
