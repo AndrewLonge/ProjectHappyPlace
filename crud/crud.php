@@ -1,11 +1,11 @@
-<?php include('database.class.php'); ?>
+<?php include('../database.class.php'); ?>
 <?php
 if (isset($_GET['edit'])) {
     $id = $_GET['edit'];
     $update = true;
     $record = mysqli_query($connection, "SELECT * FROM apprentices WHERE id=$id");
     echo mysqli_error($connection);
-    if (count($record) == 1) {
+    if (is_countable($record) == 1) {
         $n = mysqli_fetch_array($record);
         $prename = $n['prename'];
         $lastname = $n['lastname'];
@@ -35,7 +35,7 @@ if (isset($_GET['edit'])) {
     <?php endif ?>
 
 
-    <?php $result = mysqli_query($connection, "SELECT * FROM apprentices");?>
+    <?php $results = mysqli_query($connection, "SELECT * FROM apprentices");?>
 
 
     <table>
@@ -48,7 +48,7 @@ if (isset($_GET['edit'])) {
             </tr>
         </thead>
 
-        <?php while ($row = mysqli_fetch_array($result)) { ?>
+        <?php while ($row = mysqli_fetch_array($results)) { ?>
             <tr>
                 <td><?php echo $row['prename']; ?></td>
                 <td><?php echo $row['lastname']; ?></td>
@@ -57,7 +57,7 @@ if (isset($_GET['edit'])) {
                     <a href="crud.php?edit=<?php echo $row['id']; ?>" class="edit_btn">Edit</a>
                 </td>
                 <td>
-                    <a href="database.class.php?del<?php echo $row['id']; ?>" class="del_btn">Delete</a>
+                    <a href="crud.php?del=<?php echo $row['id']; ?>" class="del_btn">Delete</a>
                 </td>
             </tr>
         <?php } ?>
@@ -84,7 +84,7 @@ if (isset($_GET['edit'])) {
         <?php } ?>
     </table> 
 
-    <form method="post" action="database.class.php">
+    <form method="post" action="../database.class.php">
         <input type="hidden" name="id" value="<?php echo $id; ?>">
         <div class="input-group">
             <label>prename</label>

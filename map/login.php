@@ -1,5 +1,5 @@
 <?php
-include_once("../db.php");
+include_once("../database.class.php");
 
 
 if (isset($_POST['submit'])) {

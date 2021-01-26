@@ -1,78 +1,101 @@
 <?php
-  require_once("../crud/database.class.php");
-  
-  ?>
+require_once "data.php";
+
+?>
 <!doctype html>
 <html lang="en">
-  <head>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/css/ol.css" type="text/css">
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-      }
-      .map {
-        height: 100vh;
-        width: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: -9;
-      }
-    </style>
-    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/build/ol.js"></script>
-    <title>Project Happy Place</title>
-  </head>
-  <body>
-    <form action="signup.php" method="POST">
-        <input type="text" name="first" placeholder="Firstname">
-        <input type="text" name="last" placeholder="Lastname">
-        <input type="text" name="lat" placeholder="Latitude">
-        <input type="text" name="long" placeholder="Longtitude">
-        <input type="text" name="name" placeholder="Area">
-        <button type="submit" name="submit">Save</button>
-        <button type="button"><a href="login.php" >Login as Admin</a></button>
-    </form>
-    <?php
-      $appr = "SELECT * FROM apprentices;";
-      $place = "SELECT * FROM places;";
-     //mysqli_query($connection, $appr);
-     //mysqli_query($connection, $place);
-    ?>
-    
-    <div id="map" class="map"></div>
-    <script type="text/javascript">
-      var map = new ol.Map({
-        target: 'map',
-        layers: [
-          new ol.layer.Tile({
-            /*
-["http://a.tile2.opencyclemap.org/transport/{z}/{x}/{y}.png","http://b.tile2.opencyclemap.org/transport/{z}/{x}/{y}.png","http://c.tile2.opencyclemap.org/transport/{z}/{x}/{y}.png"]
-["http://a.tile3.opencyclemap.org/landscape/{z}/{x}/{y}.png","http://b.tile3.opencyclemap.org/landscape/{z}/{x}/{y}.png","http://c.tile3.opencyclemap.org/landscape/{z}/{x}/{y}.png"]
-["http://a.tile.openstreetmap.org/{z}/{x}/{y}.png","http://b.tile.openstreetmap.org/{z}/{x}/{y}.png","http://c.tile.openstreetmap.org/{z}/{x}/{y}.png"]
-["http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png","http://otile2.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png","http://otile3.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png","http://otile4.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png"]
-["http://a.tile.stamen.com/watercolor/{z}/{x}/{y}.png","http://b.tile.stamen.com/watercolor/{z}/{x}/{y}.png","http://c.tile.stamen.com/watercolor/{z}/{x}/{y}.png","http://d.tile.stamen.com/watercolor/{z}/{x}/{y}.png"]
-["http://a.tile2.opencyclemap.org/transport/{z}/{x}/{y}.png","http://b.tile2.opencyclemap.org/transport/{z}/{x}/{y}.png","http://c.tile2.opencyclemap.org/transport/{z}/{x}/{y}.png"]
-*/
-            source: new ol.source.XYZ({
-                urls : ["http://a.tile.stamen.com/watercolor/{z}/{x}/{y}.png","http://b.tile.stamen.com/watercolor/{z}/{x}/{y}.png","http://c.tile.stamen.com/watercolor/{z}/{x}/{y}.png","http://d.tile.stamen.com/watercolor/{z}/{x}/{y}.png"]
-            }),
 
-            source: new ol.source.OSM(),
-          }),
-          new ol.layer.Vector({
-            source: new ol.source.Vector({
-              format: new ol.format.GeoJSON(),
-              url: './assets/data/countries.geojson' // GeoCountries file from github
-            })
-          })
-        ],
-        view: new ol.View({
-          center: ol.proj.fromLonLat([8.5208324, 47.360127]),
-          zoom: 10
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/css/ol.css" type="text/css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    .map {
+      height: 100vh;
+      width: 100%;
+    }
+
+    form {
+      position: absolute;
+      padding: 1rem;
+      top: 0;
+      right: 0;
+    }
+
+    input {
+      display: block;
+    }
+
+    label {
+      display: block;
+      margin-top: .5rem;
+      font-size: .75rem;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/build/ol.js"></script>
+  <title>ol example</title>
+</head>
+
+<body>
+  <div id="map" class="map"></div>
+  <form method="POST" action="insert.php">
+    <div>
+      <label for="lat">Latitude</label>
+      <input id="lat" name="lat" />
+    </div>
+    <div>
+      <label for="lng">Longitude</label>
+      <input id="lng" name="lng" />
+    </div>
+    <button type="submit">Add Marker</button>
+  </form>
+  <script type="text/javascript">
+    var markerPoints = [<?php
+                        foreach ($markers as $marker) {
+                          print $marker->toJson();
+                          print ",\n\n";
+                        }
+                        ?>];
+
+    var markers = [];
+
+    for (let marker of markerPoints) {
+      markers.push(new ol.Feature({
+        geometry: new ol.geom.Point(ol.proj.fromLonLat([marker.lng, marker.lat]))
+      }));
+    }
+
+    var markers = new ol.layer.Vector({
+      source: new ol.source.Vector({
+        features: markers
+      }),
+      style: new ol.style.Style({
+        image: new ol.style.Icon({
+          anchor: [0.5, 46],
+          anchorXUnits: 'fraction',
+          anchorYUnits: 'pixels',
+          src: './marker.png'
         })
-      });
-    </script>
-  </body>
-</html>
+      })
+    })
 
+    var map = new ol.Map({
+      target: 'map',
+      layers: [
+        new ol.layer.Tile({
+          source: new ol.source.OSM()
+        }),
+        markers
+      ],
+      view: new ol.View({
+        center: ol.proj.fromLonLat([8.5208324, 47.360127]),
+        zoom: 10
+      })
+    });
+  </script>
+</body>
+
+</html>
