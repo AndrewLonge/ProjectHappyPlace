@@ -24,7 +24,7 @@
     
           header("Location: index.php?submit=success");
 
-          /*if ($connection === FALSE) {
+          if ($connection === FALSE) {
             die("Connection failed: " . $connection->connect_error);
           }
 
@@ -34,6 +34,6 @@
             echo "Error: " . $apprsql AND $placesql . "<br>" . $connection->error;
           }
           
-          $connection->close();*/
+          $connection->close();
     ?>
           

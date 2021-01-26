@@ -1,17 +1,19 @@
-<?php include('server.php'); ?>
+<?php include('database.class.php'); ?>
 <?php
 if (isset($_GET['edit'])) {
     $id = $_GET['edit'];
     $update = true;
-    $record = mysqli_query($db, "SELECT * FROM apprentices WHERE id=$id");
-    echo mysqli_error($db);
+    $record = mysqli_query($connection, "SELECT * FROM apprentices WHERE id=$id");
+    echo mysqli_error($connection);
     if (count($record) == 1) {
         $n = mysqli_fetch_array($record);
         $prename = $n['prename'];
         $lastname = $n['lastname'];
         $place_id = $n['place_id'];
     }
+    
 }
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -33,9 +35,7 @@ if (isset($_GET['edit'])) {
     <?php endif ?>
 
 
-    <?php $results = mysqli_query($db, "SELECT * FROM apprentices");
-    echo mysqli_error($db);
-    ?>
+    <?php $result = mysqli_query($connection, "SELECT * FROM apprentices");?>
 
 
     <table>
@@ -48,7 +48,7 @@ if (isset($_GET['edit'])) {
             </tr>
         </thead>
 
-        <?php while ($row = mysqli_fetch_array($results)) { ?>
+        <?php while ($row = mysqli_fetch_array($result)) { ?>
             <tr>
                 <td><?php echo $row['prename']; ?></td>
                 <td><?php echo $row['lastname']; ?></td>
@@ -57,14 +57,14 @@ if (isset($_GET['edit'])) {
                     <a href="crud.php?edit=<?php echo $row['id']; ?>" class="edit_btn">Edit</a>
                 </td>
                 <td>
-                    <a href="server.php?del=<?php echo $row['id']; ?>" class="del_btn">Delete</a>
+                    <a href="database.class.php?del<?php echo $row['id']; ?>" class="del_btn">Delete</a>
                 </td>
             </tr>
         <?php } ?>
     </table> 
 
-    <?php $results = mysqli_query($db, "SELECT * FROM places");
-    echo mysqli_error($db);
+    <?php $results = mysqli_query($connection, "SELECT * FROM places");
+    echo mysqli_error($connection);
     ?>
 
 
@@ -84,7 +84,7 @@ if (isset($_GET['edit'])) {
         <?php } ?>
     </table> 
 
-    <form method="post" action="server.php">
+    <form method="post" action="database.class.php">
         <input type="hidden" name="id" value="<?php echo $id; ?>">
         <div class="input-group">
             <label>prename</label>

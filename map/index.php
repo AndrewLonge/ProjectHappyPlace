@@ -1,5 +1,6 @@
 <?php
-  include '../db.php'
+  require_once("../crud/database.class.php");
+  
   ?>
 <!doctype html>
 <html lang="en">
@@ -35,8 +36,8 @@
     <?php
       $appr = "SELECT * FROM apprentices;";
       $place = "SELECT * FROM places;";
-      mysqli_query($connection, $appr);
-      mysqli_query($connection, $place);
+     //mysqli_query($connection, $appr);
+     //mysqli_query($connection, $place);
     ?>
     
     <div id="map" class="map"></div>
