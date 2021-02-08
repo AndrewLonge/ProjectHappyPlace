@@ -1,11 +1,11 @@
 <?php
-    include '../database.class.php';
+    /*include '../database.class.php';
 
     $prename = $_POST['first'];
     $lastname = $_POST['last'];
     $latitude = $_POST['lat'];
     $longitude = $_POST['long'];
-    $plcName = $_POST['name'];
+    $name = $_POST['name'];
     
     if(isset($_POST['submit']))
     $idcount = "SELECT COUNT(id) as countid FROM apprentices";
@@ -14,7 +14,7 @@
     $id = $row["countid"]+1;
 
 
-    $placSQL = "INSERT INTO places (id, name, latitude, longitude) VALUES ($id, '$plcName', '$latitude','$longitude');";
+    $placSQL = "INSERT INTO places (id, name, latitude, longitude) VALUES ($id, '$name', '$latitude','$longitude');";
     $markSQL = "INSERT INTO markers (id) VALUE ($id);";
     $apprSQL = "INSERT INTO apprentices (prename, lastname, place_id, markers_id) VALUES ('$prename', '$lastname', $id, $id);";
     
@@ -34,6 +34,6 @@
             echo "Error: " . $apprsql AND $placesql . "<br>" . $connection->error;
           }
           
-          $connection->close();
+          $connection->close();*/
     ?>
           

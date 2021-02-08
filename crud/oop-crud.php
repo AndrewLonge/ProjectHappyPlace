@@ -1,13 +1,21 @@
-<?php include('../database.class.php'); ?>
+<?php include('./server.php');
+      require_once('./entity.class.php');?>
+<?php      $mysqli = new mysqli("localhost", "root", "", "happyplace");
 
+/* check connection */
+if ($mysqli->connect_errno) {
+    printf("Connect failed: %s\n", $mysqli->connect_error);
+    exit();
+}
+?>
 <?php
-if (isset($_GET['edit'])) {
+   if (isset($_GET['edit'])) {
     $id = $_GET['edit'];
     $update = true;
-    $record = mysqli_query($connection, "SELECT * FROM apprentices WHERE id=$id");
-    echo mysqli_error($connection);
+    $record = $mysqli->query($connection, "SELECT * FROM apprentices WHERE id=$id");
+    printf ($connection, $mysqli->error);
     if (is_countable($record) == 1) {
-        $n = mysqli_fetch_array($record);
+        $n = $record->fetch_array();
         $prename = $n['prename'];
         $lastname = $n['lastname'];
         $place_id = $n['place_id'];
@@ -16,6 +24,7 @@ if (isset($_GET['edit'])) {
 }
 
 ?>
+
 <!DOCTYPE html>
 <html>
 
@@ -26,17 +35,16 @@ if (isset($_GET['edit'])) {
 </head>
 
 <body>
-    <?php if (isset($_SESSION['message'])) : ?>
+<?php if (isset($_SESSION['message'])) : ?>
         <div class="msg">
             <?php
             echo $_SESSION['message'];
             unset($_SESSION['message']);
             ?>
         </div>
-    <?php endif ?>
+        <?php endif ?>
 
-
-    <?php $results = mysqli_query($connection, "SELECT * FROM apprentices");?>
+        <?php $results = $mysqli->query( "SELECT * FROM apprentices");?>
 
 
     <table>
@@ -49,23 +57,26 @@ if (isset($_GET['edit'])) {
             </tr>
         </thead>
 
-        <?php while ($row = mysqli_fetch_array($results)) { ?>
+        <?php while ($row = $results->fetch_array()) { ?>
+       
             <tr>
                 <td><?php echo $row['prename']; ?></td>
                 <td><?php echo $row['lastname']; ?></td>
                 <td><?php echo $row['place_id']; ?></td>
                 <td>
-                    <a href="crud.php?edit=<?php echo $row['id']; ?>" class="edit_btn">Edit</a>
+                    <a href="oop-crud.php?edit=<?php echo $row['id']; ?>" class="edit_btn">Edit</a>
                 </td>
                 <td>
-                    <a href="crud.php?del=<?php echo $row['id']; ?>" class="del_btn">Delete</a>
+                    <a href="oop-crud.php?del=<?php echo $row['id']; ?>" class="del_btn">Delete</a>
                 </td>
             </tr>
-        <?php } ?>
+
+            <?php } ?>
+        
     </table> 
 
-    <?php $results = mysqli_query($connection, "SELECT * FROM places");
-    echo mysqli_error($connection);
+    <?php $results = $mysqli->query("SELECT * FROM places");
+    
     ?>
 
 
@@ -76,16 +87,14 @@ if (isset($_GET['edit'])) {
                 <th>name</th>
             </tr>
         </thead>
-
-        <?php while ($row = mysqli_fetch_array($results)) { ?>
+        <?php while ($row = $results->fetch_array()) { ?>
             <tr>
                 <td><?php echo $row['id']; ?></td>
                 <td><?php echo $row['name']; ?></td>
             </tr>
         <?php } ?>
-    </table> 
 
-    <form method="post" action="../database.class.php">
+        <form method="post" action="../database.class.php">
         <input type="hidden" name="id" value="<?php echo $id; ?>">
         <div class="input-group">
             <label>prename</label>
@@ -100,7 +109,7 @@ if (isset($_GET['edit'])) {
             <input type="text" name="place_id" value="<?php echo $place_id; ?>">
         </div>
         <div class="input-group">
-            <?php if ($update == true) : ?>
+            <?php if ($update = true) : ?>
                 <button class="btn" type="submit" name="update" style="background: #556B2F;">update</button>
             <?php else : ?>
                 <button class="btn" type="submit" name="save">Save</button>

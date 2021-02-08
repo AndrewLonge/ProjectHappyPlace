@@ -2,21 +2,25 @@
 
 class Marker
 {
-  public $id;
+  public $name;
   public $lat;
   public $lng;
-
-  public function __construct($lat, $lng, $id = null)
+  public $id;
+  public function __construct($name, $lat, $lng, $id = null)
   {
+    $this->name = $name;
     $this->lat = $lat;
     $this->lng = $lng;
     $this->id = $id;
+    
   }
 
   public function toJson()
   {
     return json_encode([
+
       "id" => $this->id,
+      "name" => $this->name,
       "lat" => $this->lat,
       "lng" => $this->lng
     ]);
@@ -24,9 +28,10 @@ class Marker
 
   public function create($connection)
   {
+    $name = $connection->real_escape_string($this->name);
     $lat = $connection->real_escape_string($this->lat);
     $lng = $connection->real_escape_string($this->lng);
-    $sql = "INSERT INTO `places` (lat, lng) VALUES ('$lat', '$lng');";
+    $sql = "INSERT INTO `places` (name, lat, lng) VALUES ('$name', '$lat', '$lng');";
 
     $result = $connection->query($sql);
 
@@ -48,7 +53,7 @@ class Marker
     $markers = [];
 
     foreach ($markersFromDatabase as $marker) {
-      $markers[] = new Marker($marker['lat'], $marker['lng'], $marker['id']);
+      $markers[] = new Marker($marker['name'], $marker['lat'], $marker['lng'], $marker['id']);
     }
 
     return $markers;

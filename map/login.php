@@ -28,7 +28,7 @@ if (isset($_POST['submit'])) {
     <title>Document</title>
 </head>
 <body>
-    <form action="login.php" method="POST">
+    <form action="../crud/crud.php" method="POST">
         <input type="text" name="username" placeholder="Username">
         <input type="password" name="password" placeholder="Password">
         <button type="submit" name="submit">Login</button>

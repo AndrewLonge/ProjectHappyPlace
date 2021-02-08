@@ -42,6 +42,10 @@ require_once "data.php";
 <body>
   <div id="map" class="map"></div>
   <form method="POST" action="insert.php">
+  <div>
+      <label for="name">Place name</label>
+      <input id="name" name="name" />
+  </div>
     <div>
       <label for="lat">Latitude</label>
       <input id="lat" name="lat" />
@@ -52,6 +56,8 @@ require_once "data.php";
     </div>
     <button type="submit">Add Marker</button>
   </form>
+  <a href="../admin/index.php" style="top: 0; position: absolute; right: 0"><button style="background-color: lightgreen; color: black; height: 2em">Login as Admin</button></a>
+
   <script type="text/javascript">
     var markerPoints = [<?php
                         foreach ($markers as $marker) {
@@ -60,14 +66,18 @@ require_once "data.php";
                         }
                         ?>];
 
+var markerPoints = [<?php
+                        foreach ($markers as $marker) {
+                          print $marker->toJson();
+                          print ",\n\n";
+                        }
+                        ?>];
     var markers = [];
-
     for (let marker of markerPoints) {
       markers.push(new ol.Feature({
         geometry: new ol.geom.Point(ol.proj.fromLonLat([marker.lng, marker.lat]))
       }));
     }
-
     var markers = new ol.layer.Vector({
       source: new ol.source.Vector({
         features: markers
@@ -81,7 +91,6 @@ require_once "data.php";
         })
       })
     })
-
     var map = new ol.Map({
       target: 'map',
       layers: [
